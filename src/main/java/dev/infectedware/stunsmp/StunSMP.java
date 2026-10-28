@@ -26,6 +26,8 @@ public final class StunSMP extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        registeredRecipes.forEach(key -> Bukkit.removeRecipe(key, true));
+        registeredRecipes.clear();
     }
 
     private void registerShapedRecipe(String name, Material result, Map<Character, Material> ingredients, String... shape) {
