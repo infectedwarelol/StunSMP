@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.CrafterCraftEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.CraftingInventory;
@@ -21,6 +22,13 @@ final class EnchantedGoldenAppleListener implements Listener {
         CraftingInventory inventory = event.getInventory();
         if (isEnchantedGoldenApple(inventory.getResult())) {
             inventory.setResult(null);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onCrafterCraft(CrafterCraftEvent event) {
+        if (isEnchantedGoldenApple(event.getResult())) {
+            event.setCancelled(true);
         }
     }
 
