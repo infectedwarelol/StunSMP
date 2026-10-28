@@ -1,0 +1,6 @@
+name: StunSMP
+version: '${version}'
+main: dev.infectedware.stunsmp.StunSMP
+api-version: '1.21.11'
+author: infectedware
+website: https://infectedware.dev/
