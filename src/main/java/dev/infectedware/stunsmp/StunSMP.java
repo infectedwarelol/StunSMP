@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,10 +23,12 @@ public final class StunSMP extends JavaPlugin {
         registerShapedRecipe("cobweb", Material.COBWEB,
                 Map.of('S', Material.STRING),
                 "SSS", "SSS", "SSS");
+        getServer().getPluginManager().registerEvents(new EnchantedGoldenAppleListener(), this);
     }
 
     @Override
     public void onDisable() {
+        HandlerList.unregisterAll(this);
         registeredRecipes.forEach(key -> Bukkit.removeRecipe(key, true));
         registeredRecipes.clear();
     }
