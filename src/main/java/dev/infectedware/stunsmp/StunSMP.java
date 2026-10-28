@@ -19,6 +19,9 @@ public final class StunSMP extends JavaPlugin {
         registerShapedRecipe("golden_apple", Material.GOLDEN_APPLE,
                 Map.of('G', Material.GOLD_INGOT, 'A', Material.APPLE),
                 " G ", "GAG", " G ");
+        registerShapedRecipe("cobweb", Material.COBWEB,
+                Map.of('S', Material.STRING),
+                "SSS", "SSS", "SSS");
     }
 
     @Override
