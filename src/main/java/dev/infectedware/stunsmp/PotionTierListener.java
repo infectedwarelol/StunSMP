@@ -1,9 +1,11 @@
 package dev.infectedware.stunsmp;
 
 import java.util.List;
+import java.util.Set;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.BrewerInventory;
@@ -12,6 +14,12 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 
 final class PotionTierListener implements Listener {
+
+    private static final Set<EntityPotionEffectEvent.Cause> CAPPED_CAUSES = Set.of(
+            EntityPotionEffectEvent.Cause.POTION_DRINK,
+            EntityPotionEffectEvent.Cause.POTION_SPLASH,
+            EntityPotionEffectEvent.Cause.AREA_EFFECT_CLOUD,
+            EntityPotionEffectEvent.Cause.ARROW);
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBrew(BrewEvent event) {
@@ -27,6 +35,13 @@ final class PotionTierListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         if (hasAmplifiedEffect(event.getItem())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPotionEffect(EntityPotionEffectEvent event) {
+        if (CAPPED_CAUSES.contains(event.getCause()) && isAmplified(event.getNewEffect())) {
             event.setCancelled(true);
         }
     }
