@@ -51,13 +51,18 @@ final class SpawnTeleportManager {
         }
     }
 
-    private boolean cancelCountdown(UUID playerId) {
+    boolean cancelCountdown(UUID playerId) {
         BukkitTask countdown = countdowns.remove(playerId);
         if (countdown == null) {
             return false;
         }
         countdown.cancel();
         return true;
+    }
+
+    void cancelAllCountdowns() {
+        countdowns.values().forEach(BukkitTask::cancel);
+        countdowns.clear();
     }
 
     private Location resolveSpawn(Player player) {

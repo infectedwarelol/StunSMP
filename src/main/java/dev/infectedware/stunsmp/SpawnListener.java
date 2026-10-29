@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 final class SpawnListener implements Listener {
 
@@ -27,5 +28,10 @@ final class SpawnListener implements Listener {
         if (event.getEntity() instanceof Player player) {
             spawnTeleportManager.cancelCountdown(player, "cancelled-damage");
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onQuit(PlayerQuitEvent event) {
+        spawnTeleportManager.cancelCountdown(event.getPlayer().getUniqueId());
     }
 }

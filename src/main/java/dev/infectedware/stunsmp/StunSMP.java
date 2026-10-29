@@ -18,6 +18,7 @@ public final class StunSMP extends JavaPlugin {
 
     private final List<NamespacedKey> registeredRecipes = new ArrayList<>();
     private SpawnManager spawnManager;
+    private SpawnTeleportManager spawnTeleportManager;
 
     @Override
     public void onEnable() {
@@ -25,7 +26,7 @@ public final class StunSMP extends JavaPlugin {
         spawnManager = new SpawnManager(getDataFolder().toPath(), getLogger());
         spawnManager.load();
         Messages messages = new Messages(getConfig());
-        SpawnTeleportManager spawnTeleportManager = new SpawnTeleportManager(this, spawnManager, messages,
+        spawnTeleportManager = new SpawnTeleportManager(this, spawnManager, messages,
                 getConfig().getInt("countdown-seconds", 5));
         SpawnCommand spawnCommand = new SpawnCommand(spawnManager, spawnTeleportManager, messages);
         bindCommand("setspawn", spawnCommand);
@@ -47,6 +48,10 @@ public final class StunSMP extends JavaPlugin {
     @Override
     public void onDisable() {
         HandlerList.unregisterAll(this);
+        if (spawnTeleportManager != null) {
+            spawnTeleportManager.cancelAllCountdowns();
+            spawnTeleportManager = null;
+        }
         registeredRecipes.forEach(key -> Bukkit.removeRecipe(key, true));
         registeredRecipes.clear();
         if (spawnManager != null) {
