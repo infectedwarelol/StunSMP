@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockDispenseLootEvent;
 import org.bukkit.event.block.CrafterCraftEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -19,6 +20,11 @@ final class BannedItemListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLootGenerate(LootGenerateEvent event) {
         event.getLoot().removeIf(BannedItemListener::isBanned);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onVaultDispense(BlockDispenseLootEvent event) {
+        event.getDispensedLoot().removeIf(BannedItemListener::isBanned);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
