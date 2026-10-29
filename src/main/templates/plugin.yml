@@ -4,3 +4,28 @@ main: dev.infectedware.stunsmp.StunSMP
 api-version: '1.21.11'
 author: infectedware
 website: https://infectedware.dev/
+
+commands:
+  setspawn:
+    description: Set the server spawn to your location.
+    usage: /setspawn
+  spawn:
+    description: Teleport to the server spawn.
+    usage: /spawn
+  delspawn:
+    description: Delete the server spawn.
+    usage: /delspawn
+
+permissions:
+  stunsmp.setspawn:
+    description: Allows setting the spawn.
+    default: op
+  stunsmp.delspawn:
+    description: Allows deleting the spawn.
+    default: op
+  stunsmp.spawn:
+    description: Allows teleporting to the spawn.
+    default: true
+  stunsmp.spawn.bypass:
+    description: Teleports to the spawn without a countdown.
+    default: op
