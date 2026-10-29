@@ -27,6 +27,7 @@ public final class StunSMP extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new BannedItemListener(), this);
         pluginManager.registerEvents(new PotionTierListener(), this);
+        pluginManager.registerEvents(new NetherListener(), this);
     }
 
     @Override
