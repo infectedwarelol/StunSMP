@@ -6,6 +6,8 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -22,6 +24,9 @@ public final class StunSMP extends JavaPlugin {
         saveDefaultConfig();
         spawnManager = new SpawnManager(getDataFolder().toPath(), getLogger());
         spawnManager.load();
+        Messages messages = new Messages(getConfig());
+        SpawnCommand spawnCommand = new SpawnCommand(spawnManager, messages);
+        bindCommand("setspawn", spawnCommand);
         registerShapedRecipe("golden_apple", Material.GOLDEN_APPLE,
                 Map.of('G', Material.GOLD_INGOT, 'A', Material.APPLE),
                 " G ", "GAG", " G ");
@@ -43,6 +48,14 @@ public final class StunSMP extends JavaPlugin {
             spawnManager.shutdown();
             spawnManager = null;
         }
+    }
+
+    private void bindCommand(String name, CommandExecutor executor) {
+        PluginCommand command = getCommand(name);
+        if (command == null) {
+            throw new IllegalStateException("Command /" + name + " is missing from plugin.yml");
+        }
+        command.setExecutor(executor);
     }
 
     private void registerShapedRecipe(String name, Material result, Map<Character, Material> ingredients, String... shape) {
