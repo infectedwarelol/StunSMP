@@ -44,6 +44,22 @@ final class SpawnTeleportManager {
         countdowns.put(playerId, new Countdown(player).runTaskTimer(plugin, 0L, TICKS_PER_SECOND));
     }
 
+    void cancelCountdown(Player player, String reasonKey) {
+        if (cancelCountdown(player.getUniqueId())) {
+            messages.send(player, reasonKey);
+            messages.sendActionBar(player, reasonKey);
+        }
+    }
+
+    private boolean cancelCountdown(UUID playerId) {
+        BukkitTask countdown = countdowns.remove(playerId);
+        if (countdown == null) {
+            return false;
+        }
+        countdown.cancel();
+        return true;
+    }
+
     private Location resolveSpawn(Player player) {
         if (!spawnManager.hasSpawn()) {
             messages.send(player, "no-spawn");
