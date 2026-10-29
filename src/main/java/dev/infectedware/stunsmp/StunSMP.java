@@ -15,10 +15,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class StunSMP extends JavaPlugin {
 
     private final List<NamespacedKey> registeredRecipes = new ArrayList<>();
+    private SpawnManager spawnManager;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        spawnManager = new SpawnManager(getDataFolder().toPath(), getLogger());
+        spawnManager.load();
         registerShapedRecipe("golden_apple", Material.GOLDEN_APPLE,
                 Map.of('G', Material.GOLD_INGOT, 'A', Material.APPLE),
                 " G ", "GAG", " G ");
@@ -36,6 +39,10 @@ public final class StunSMP extends JavaPlugin {
         HandlerList.unregisterAll(this);
         registeredRecipes.forEach(key -> Bukkit.removeRecipe(key, true));
         registeredRecipes.clear();
+        if (spawnManager != null) {
+            spawnManager.shutdown();
+            spawnManager = null;
+        }
     }
 
     private void registerShapedRecipe(String name, Material result, Map<Character, Material> ingredients, String... shape) {
