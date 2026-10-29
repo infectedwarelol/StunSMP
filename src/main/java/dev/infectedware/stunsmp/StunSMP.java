@@ -23,7 +23,7 @@ public final class StunSMP extends JavaPlugin {
         registerShapedRecipe("cobweb", Material.COBWEB,
                 Map.of('S', Material.STRING),
                 "SSS", "SSS", "SSS");
-        getServer().getPluginManager().registerEvents(new EnchantedGoldenAppleListener(), this);
+        getServer().getPluginManager().registerEvents(new BannedItemListener(), this);
     }
 
     @Override

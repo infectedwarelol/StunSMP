@@ -1,5 +1,6 @@
 package dev.infectedware.stunsmp;
 
+import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,36 +12,38 @@ import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 
-final class EnchantedGoldenAppleListener implements Listener {
+final class BannedItemListener implements Listener {
+
+    private static final Set<Material> BANNED_MATERIALS = Set.of(Material.ENCHANTED_GOLDEN_APPLE);
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLootGenerate(LootGenerateEvent event) {
-        event.getLoot().removeIf(EnchantedGoldenAppleListener::isEnchantedGoldenApple);
+        event.getLoot().removeIf(BannedItemListener::isBanned);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPrepareCraft(PrepareItemCraftEvent event) {
         CraftingInventory inventory = event.getInventory();
-        if (isEnchantedGoldenApple(inventory.getResult())) {
+        if (isBanned(inventory.getResult())) {
             inventory.setResult(null);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrafterCraft(CrafterCraftEvent event) {
-        if (isEnchantedGoldenApple(event.getResult())) {
+        if (isBanned(event.getResult())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
-        if (isEnchantedGoldenApple(event.getItem())) {
+        if (isBanned(event.getItem())) {
             event.setCancelled(true);
         }
     }
 
-    private static boolean isEnchantedGoldenApple(ItemStack item) {
-        return item != null && item.getType() == Material.ENCHANTED_GOLDEN_APPLE;
+    private static boolean isBanned(ItemStack item) {
+        return item != null && BANNED_MATERIALS.contains(item.getType());
     }
 }
