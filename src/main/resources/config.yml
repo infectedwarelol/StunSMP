@@ -1,0 +1,16 @@
+countdown-seconds: 5
+
+messages:
+  players-only: "&cOnly players can use this command."
+  no-permission: "&cYou do not have permission to use this command."
+  spawn-set: "&aSpawn set to your current location."
+  spawn-deleted: "&aSpawn deleted."
+  no-spawn-to-delete: "&cThere is no spawn to delete."
+  no-spawn: "&cNo spawn has been set."
+  world-not-loaded: "&cThe spawn world is not loaded."
+  already-teleporting: "&cYou are already teleporting to spawn."
+  countdown: "&#FFD700Teleporting to spawn in &f{seconds}&#FFD700..."
+  teleported: "&aTeleported to spawn."
+  teleport-failed: "&cCould not teleport you to spawn."
+  cancelled-move: "&cTeleport cancelled because you moved."
+  cancelled-damage: "&cTeleport cancelled because you took damage."

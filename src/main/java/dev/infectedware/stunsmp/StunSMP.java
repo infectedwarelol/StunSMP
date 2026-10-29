@@ -18,6 +18,7 @@ public final class StunSMP extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         registerShapedRecipe("golden_apple", Material.GOLDEN_APPLE,
                 Map.of('G', Material.GOLD_INGOT, 'A', Material.APPLE),
                 " G ", "GAG", " G ");
