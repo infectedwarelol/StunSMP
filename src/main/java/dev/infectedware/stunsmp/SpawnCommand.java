@@ -9,12 +9,15 @@ final class SpawnCommand implements CommandExecutor {
 
     private static final String SET_SPAWN_PERMISSION = "stunsmp.setspawn";
     private static final String DELETE_SPAWN_PERMISSION = "stunsmp.delspawn";
+    private static final String SPAWN_PERMISSION = "stunsmp.spawn";
 
     private final SpawnManager spawnManager;
+    private final SpawnTeleportManager spawnTeleportManager;
     private final Messages messages;
 
-    SpawnCommand(SpawnManager spawnManager, Messages messages) {
+    SpawnCommand(SpawnManager spawnManager, SpawnTeleportManager spawnTeleportManager, Messages messages) {
         this.spawnManager = spawnManager;
+        this.spawnTeleportManager = spawnTeleportManager;
         this.messages = messages;
     }
 
@@ -23,6 +26,7 @@ final class SpawnCommand implements CommandExecutor {
         switch (command.getName()) {
             case "setspawn" -> setSpawn(sender);
             case "delspawn" -> deleteSpawn(sender);
+            case "spawn" -> spawn(sender);
             default -> {
                 return false;
             }
@@ -49,5 +53,17 @@ final class SpawnCommand implements CommandExecutor {
             return;
         }
         messages.send(sender, spawnManager.clearSpawn() ? "spawn-deleted" : "no-spawn-to-delete");
+    }
+
+    private void spawn(CommandSender sender) {
+        if (!(sender instanceof Player player)) {
+            messages.send(sender, "players-only");
+            return;
+        }
+        if (!player.hasPermission(SPAWN_PERMISSION)) {
+            messages.send(player, "no-permission");
+            return;
+        }
+        spawnTeleportManager.requestTeleport(player);
     }
 }
