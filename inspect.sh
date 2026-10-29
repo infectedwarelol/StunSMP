@@ -63,8 +63,22 @@ require_field "author: infectedware"
 require_field "website: https://infectedware.dev/"
 forbid_field description
 forbid_field folia-supported
-forbid_field commands
-forbid_field permissions
+
+echo "==> Checking commands"
+declared_commands="$(awk '/^commands:/{inside=1; next} /^[a-z]/{inside=0} inside && /^  [a-z0-9_-]+:$/{gsub(/[ :]/, ""); print}' "$plugin_template")"
+for command in $declared_commands; do
+    if ! grep -rqF "\"$command\"" "$java_sources"; then
+        error "/$command is declared in plugin.yml but never registered in Java"
+    fi
+done
+
+echo "==> Checking permissions"
+declared_permissions="$(awk '/^permissions:/{inside=1; next} /^[a-z]/{inside=0} inside && /^  [a-z0-9_.*-]+:$/{gsub(/[ :]/, ""); print}' "$plugin_template")"
+while IFS= read -r permission; do
+    if ! grep -qxF "$permission" <<<"$declared_permissions"; then
+        warning "permission $permission is used in Java but not declared in plugin.yml"
+    fi
+done < <(grep -rhoE '"stunsmp\.[a-z0-9_.-]*[a-z0-9_-]"' "$java_sources" | tr -d '"' | sort -u)
 
 echo "==> Checking sources"
 while IFS= read -r line; do
