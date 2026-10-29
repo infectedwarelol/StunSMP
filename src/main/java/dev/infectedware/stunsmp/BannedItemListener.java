@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 final class BannedItemListener implements Listener {
 
-    private static final Set<Material> BANNED_MATERIALS = Set.of(Material.ENCHANTED_GOLDEN_APPLE);
+    private static final Set<Material> BANNED_MATERIALS = Set.of(Material.ENCHANTED_GOLDEN_APPLE, Material.MACE);
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLootGenerate(LootGenerateEvent event) {
