@@ -27,6 +27,7 @@ public final class StunSMP extends JavaPlugin {
         Messages messages = new Messages(getConfig());
         SpawnCommand spawnCommand = new SpawnCommand(spawnManager, messages);
         bindCommand("setspawn", spawnCommand);
+        bindCommand("delspawn", spawnCommand);
         registerShapedRecipe("golden_apple", Material.GOLDEN_APPLE,
                 Map.of('G', Material.GOLD_INGOT, 'A', Material.APPLE),
                 " G ", "GAG", " G ");
