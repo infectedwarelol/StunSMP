@@ -28,6 +28,9 @@ final class BannedItemListener implements Listener {
             Material.NETHERITE_AXE,
             Material.NETHERITE_SHOVEL,
             Material.NETHERITE_HOE,
+            Material.NETHERITE_SPEAR,
+            Material.NETHERITE_HORSE_ARMOR,
+            Material.NETHERITE_NAUTILUS_ARMOR,
             Material.END_CRYSTAL,
             Material.RESPAWN_ANCHOR);
 
