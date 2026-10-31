@@ -16,6 +16,18 @@ import org.bukkit.inventory.ItemStack;
 final class BannedItemListener implements Listener {
 
     private static final Set<Material> BANNED_MATERIALS = Set.of(Material.ENCHANTED_GOLDEN_APPLE, Material.MACE);
+    private static final Set<Material> UNCRAFTABLE_MATERIALS = Set.of(
+            Material.NETHERITE_HELMET,
+            Material.NETHERITE_CHESTPLATE,
+            Material.NETHERITE_LEGGINGS,
+            Material.NETHERITE_BOOTS,
+            Material.NETHERITE_SWORD,
+            Material.NETHERITE_PICKAXE,
+            Material.NETHERITE_AXE,
+            Material.NETHERITE_SHOVEL,
+            Material.NETHERITE_HOE,
+            Material.END_CRYSTAL,
+            Material.RESPAWN_ANCHOR);
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLootGenerate(LootGenerateEvent event) {
@@ -30,14 +42,16 @@ final class BannedItemListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPrepareCraft(PrepareItemCraftEvent event) {
         CraftingInventory inventory = event.getInventory();
-        if (isBanned(inventory.getResult())) {
+        ItemStack result = inventory.getResult();
+        if (isBanned(result) || isUncraftable(result)) {
             inventory.setResult(null);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrafterCraft(CrafterCraftEvent event) {
-        if (isBanned(event.getResult())) {
+        ItemStack result = event.getResult();
+        if (isBanned(result) || isUncraftable(result)) {
             event.setCancelled(true);
         }
     }
@@ -51,5 +65,9 @@ final class BannedItemListener implements Listener {
 
     private static boolean isBanned(ItemStack item) {
         return item != null && BANNED_MATERIALS.contains(item.getType());
+    }
+
+    private static boolean isUncraftable(ItemStack item) {
+        return item != null && UNCRAFTABLE_MATERIALS.contains(item.getType());
     }
 }
