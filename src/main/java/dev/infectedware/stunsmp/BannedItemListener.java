@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseLootEvent;
 import org.bukkit.event.block.CrafterCraftEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.inventory.PrepareSmithingEvent;
+import org.bukkit.event.inventory.SmithItemEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.CraftingInventory;
@@ -52,6 +54,20 @@ final class BannedItemListener implements Listener {
     public void onCrafterCraft(CrafterCraftEvent event) {
         ItemStack result = event.getResult();
         if (isBanned(result) || isUncraftable(result)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPrepareSmithing(PrepareSmithingEvent event) {
+        if (isUncraftable(event.getResult())) {
+            event.setResult(null);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onSmithItem(SmithItemEvent event) {
+        if (isUncraftable(event.getInventory().getResult())) {
             event.setCancelled(true);
         }
     }
